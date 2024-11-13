@@ -1,4 +1,4 @@
-cat > README.md << 'EOL'
+
 # 🔬 COVID-19 X-Ray Classification Project
 
 ## 📊 Quick Overview
