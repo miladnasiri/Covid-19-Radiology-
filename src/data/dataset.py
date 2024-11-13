@@ -15,6 +15,10 @@ class CovidXrayDataset(Dataset):
         self.phase = phase
         self.transform = transform or self._get_transforms()
         
+        # Add class_to_idx mapping
+        self.classes = ['COVID', 'Lung_Opacity', 'Normal', 'Viral Pneumonia']
+        self.class_to_idx = {class_name: idx for idx, class_name in enumerate(self.classes)}
+    
     def _get_transforms(self):
         if self.phase == 'train':
             return A.Compose([
@@ -59,11 +63,13 @@ class CovidXrayDataset(Dataset):
         }
 
 def get_data_loaders(data_dir, batch_size=32, num_workers=4):
+    # Define classes
+    class_names = ['COVID', 'Lung_Opacity', 'Normal', 'Viral Pneumonia']
+    class_to_idx = {name: idx for idx, name in enumerate(class_names)}
+    
     # Get all image paths and labels
     image_paths = []
     labels = []
-    class_names = ['COVID', 'Lung_Opacity', 'Normal', 'Viral Pneumonia']
-    class_to_idx = {name: idx for idx, name in enumerate(class_names)}
     
     for class_name in class_names:
         class_dir = os.path.join(data_dir, class_name, 'images')
