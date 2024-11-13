@@ -1,0 +1,28 @@
+data:
+  data_dir: "./data/raw/COVID-19_Radiography_Dataset"
+  image_size: [224, 224]
+  batch_size: 16  # Reduced batch size for initial testing
+  num_workers: 4
+  pin_memory: true
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+
+model:
+  name: "efficientnet_v2_s"  # Using smaller model for initial testing
+  pretrained: true
+  num_classes: 4
+  dropout_rate: 0.3
+
+training:
+  epochs: 30
+  learning_rate: 0.001
+  weight_decay: 0.01
+  device: "cuda"
+  mixed_precision: true
+  grad_clip: 1.0
+
+logging:
+  log_interval: 10
+  save_dir: "./outputs"
+  experiment_name: "covid_classifier_v1"
