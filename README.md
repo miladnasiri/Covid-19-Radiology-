@@ -222,6 +222,4 @@ python src/evaluate.py
 This project is licensed under the MIT License - see the LICENSE file for details.
 EOL
 
-git add README.md
-git commit -m "Update README with comprehensive documentation including visualizations"
-git push origin main
+
