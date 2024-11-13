@@ -1,136 +1,128 @@
-cat > README.md << 'EOL'
-# 🔬 COVID-19 X-Ray Classification Project
+cat >> README.md << 'EOL'
 
-## 📊 Quick Overview
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-red)
-![Accuracy](https://img.shields.io/badge/Accuracy-96.46%25-success)
-![License](https://img.shields.io/badge/License-MIT-green)
+## 📊 Dataset Details
 
-## 🎯 Project Highlights
-- **High Accuracy**: 96.46% on test set
-- **Real-world Application**: Medical diagnosis support
-- **Advanced Architecture**: EfficientNet with custom modifications
-- **Production-Ready**: Implements best practices and modern techniques
+### COVID-19 Radiography Database
+![Kaggle Award](https://img.shields.io/badge/Kaggle-Dataset%20Award%20Winner-blue)
 
-## 🌟 Key Results
-| Class            | Precision | Recall | F1-Score |
-|-----------------|-----------|---------|----------|
-| COVID           | 0.99      | 0.98    | 0.99     |
-| Lung Opacity    | 0.96      | 0.94    | 0.95     |
-| Normal          | 0.95      | 0.98    | 0.97     |
-| Viral Pneumonia | 0.98      | 0.94    | 0.96     |
+This project utilizes the award-winning COVID-19 Radiography Database, a comprehensive collection of chest X-ray images created through international collaboration between:
+- Qatar University, Doha, Qatar
+- University of Dhaka, Bangladesh
+- Medical professionals from Pakistan and Malaysia
 
-## 📈 Training Progress
-![Training Curves](https://wandb.ai/miladnassiri92-topnetwork/covid-xray-classification/runs/16vcktjk/files/media/images/train_acc_30.png)
+### Dataset Evolution
+The database has evolved through multiple stages:
+```
+Initial Release:
+- COVID-19: 219 images
+- Normal: 1,341 images
+- Viral Pneumonia: 1,345 images
 
-## 🏗️ Model Architecture
-```mermaid
-graph TD
-    A[Input Layer 224x224x3] --> B[EfficientNet-B0]
-    B --> C[Feature Maps]
-    B --> D[Skip Connections]
-    B --> E[Attention]
-    C --> F[Global Average Pooling]
-    D --> F
-    E --> F
-    F --> G[Dropout 0.5]
-    G --> H[Dense 512 + ReLU]
-    H --> I[Dropout 0.3]
-    I --> J[Output Layer]
-    J --> K[Softmax]
+Current Version:
+- COVID-19: 3,616 images
+- Normal: 10,192 images
+- Lung Opacity: 6,012 images
+- Viral Pneumonia: 1,345 images
+Total: 21,165 images
 ```
 
-## 💡 Technical Innovations
-1. **Advanced Training Pipeline**
-   - Mixed Precision Training (FP16)
-   - Gradient Clipping & Accumulation
-   - Cosine Learning Rate Scheduling
-   - Early Stopping with Patience
+### Dataset Characteristics
+- **Image Format**: PNG format
+- **Resolution**: 299×299 pixels
+- **Type**: Grayscale chest X-rays
+- **Annotations**: Includes corresponding lung masks
+- **Quality**: Medical-grade, verified images
 
-2. **Data Augmentation Strategy**
-   ```python
-   Compose([
-     RandomResizedCrop(224, 224),
-     HorizontalFlip(p=0.5),
-     RandomBrightnessContrast(),
-     ShiftScaleRotate(),
-     OneOf([GaussNoise(), GaussianBlur()])
-   ])
-   ```
-
-3. **Optimization Techniques**
-   - AdamW with Weight Decay
-   - Label Smoothing
-   - Class Weight Balancing
-   - Mixed Precision Training
-
-## 📊 Dataset Distribution
-| Class           | Images | Percentage |
-|----------------|---------|------------|
-| COVID          | 3,616   | 17.1%      |
-| Lung Opacity   | 6,012   | 28.4%      |
-| Normal         | 10,192  | 48.2%      |
-| Viral Pneumonia| 1,345   | 6.3%       |
-
-## 🚀 Model Performance
+### Class Distribution
 ```
-Final Metrics:
-- Training Accuracy: 97.38%
-- Validation Accuracy: 95.89%
-- Test Accuracy: 96.46%
-- Training Loss: 0.0782
-- Validation Loss: 0.1432
+Distribution Ratio (relative to smallest class):
+- Normal: 7.58x
+- Lung Opacity: 4.47x
+- COVID-19: 2.69x
+- Viral Pneumonia: 1.00x (base)
 ```
 
-## 🔧 Installation & Usage
-```bash
-# Clone repository
-git clone https://github.com/miladnasiri/Covid-19-Radiology-.git
+### Data Sources
+The COVID-19 images were collected from multiple sources:
+1. Padchest dataset (2,473 images)
+2. German medical school (183 images)
+3. SIRM, Github, Kaggle & Twitter (559 images)
+4. Additional GitHub sources (400 images)
 
-# Setup environment
-python -m venv venv
-source venv/bin/activate  # Windows: .\venv\Scripts\activate
+### Verification Process
+- All images were verified by medical professionals
+- Quality control measures were implemented
+- Proper documentation and labeling
+- Expert validation of classifications
 
-# Install dependencies
-pip install -r requirements.txt
+### Dataset Access
+- [Kaggle Dataset Link](https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database)
+- Winner of the COVID-19 Dataset Award by Kaggle Community
+- Regularly updated with new verified cases
 
-# Train model
-python src/train.py
-
-# Evaluate
-python src/evaluate.py
+### Data Preprocessing
+For this project, we implemented the following preprocessing steps:
+```python
+def preprocess_image(image):
+    # Resize to model input size
+    image = cv2.resize(image, (224, 224))
+    
+    # Convert to RGB if grayscale
+    if len(image.shape) == 2:
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+    
+    # Normalize pixel values
+    image = image / 255.0
+    
+    # Apply standardization
+    image = (image - [0.485, 0.456, 0.406]) / [0.229, 0.224, 0.225]
+    
+    return image
 ```
 
-## 📱 Sample Predictions
-![Sample Predictions](predictions/COVID_sample_1.png)
+### Data Augmentation Strategy
+To address class imbalance and improve model generalization:
+```python
+augmentation = A.Compose([
+    A.RandomRotate90(p=0.5),
+    A.Flip(p=0.5),
+    A.Transpose(p=0.5),
+    A.OneOf([
+        A.IAAAdditiveGaussianNoise(),
+        A.GaussNoise(),
+    ], p=0.2),
+    A.OneOf([
+        A.MotionBlur(p=0.2),
+        A.MedianBlur(blur_limit=3, p=0.1),
+        A.Blur(blur_limit=3, p=0.1),
+    ], p=0.2),
+    A.ShiftScaleRotate(shift_limit=0.0625, scale_limit=0.2, rotate_limit=45, p=0.2),
+    A.OneOf([
+        A.OpticalDistortion(p=0.3),
+        A.GridDistortion(p=0.1),
+        A.IAAPiecewiseAffine(p=0.3),
+    ], p=0.2),
+    A.OneOf([
+        A.CLAHE(clip_limit=2),
+        A.IAASharpen(),
+        A.IAAEmboss(),
+        A.RandomBrightnessContrast(),
+    ], p=0.3),
+    A.HueSaturationValue(p=0.3),
+])
+```
 
-## 🧪 Experiment Tracking
-- Full training logs and metrics available on [W&B Dashboard](https://wandb.ai/miladnassiri92-topnetwork/covid-xray-classification/runs/16vcktjk)
-
-## 🔍 Model Analysis
-- **Strengths**:
-  - High accuracy on COVID-19 detection (99% precision)
-  - Robust performance across all classes
-  - Fast inference time
-- **Use Cases**:
-  - Medical diagnosis support
-  - Rapid screening
-  - Research applications
-
-## 📚 References
-1. [EfficientNet Paper](https://arxiv.org/abs/1905.11946)
-2. [COVID-19 Radiography Database](https://ieee-dataport.org/documents/covid-19-chest-x-ray-database)
-
-## 👤 Author
-**Milad Nasiri**
-- GitHub: [@miladnasiri](https://github.com/miladnasiri)
-- LinkedIn: [Milad Nasiri](Your-LinkedIn-URL)
-
-## 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+### Citation
+```bibtex
+@article{rahman2021exploring,
+  title={Exploring the Effect of Image Enhancement Techniques on COVID-19 Detection using Chest X-ray Images},
+  author={Rahman, T. and Khandakar, A. and Qiblawey, Y. and Tahir, A. and Kiranyaz, S. and Kashem, S.B.A. and Islam, M.T. and Maadeed, S.A. and Zughaier, S.M. and Khan, M.S. and Chowdhury, M.E.},
+  journal={Computers in Biology and Medicine},
+  year={2021}
+}
+```
 EOL
 
 git add README.md
-git commit -m "Enhance README with comprehensive documentation and visual elements"
+git commit -m "Add comprehensive dataset documentation and analysis"
 git push origin main
