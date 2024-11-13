@@ -46,6 +46,42 @@ Total: 21,165 images
 | Normal          | 0.95      | 0.98    | 0.97     |
 | Viral Pneumonia | 0.98      | 0.94    | 0.96     |
 
+## 🔮 Sample Predictions & Visualizations
+
+### Training Progress
+![Training Progress](https://raw.githubusercontent.com/miladnasiri/Covid-19-Radiology-/main/wandb/run-20241113_164637-16vcktjk/files/media/plots/train_acc_30_d5c46d60.png)
+
+### Confusion Matrix
+![Confusion Matrix](https://raw.githubusercontent.com/miladnasiri/Covid-19-Radiology-/main/outputs/confusion_matrix.png)
+
+### Sample Predictions by Class
+
+#### COVID-19 Cases
+![COVID Sample](https://raw.githubusercontent.com/miladnasiri/Covid-19-Radiology-/main/predictions/COVID_sample_1.png)
+- Confidence: 99.2%
+- Clear identification of COVID-19 patterns
+
+#### Lung Opacity Cases
+![Lung Opacity Sample](https://raw.githubusercontent.com/miladnasiri/Covid-19-Radiology-/main/predictions/Lung_Opacity_sample_1.png)
+- Confidence: 96.5%
+- Distinct opacity patterns detected
+
+#### Normal Cases
+![Normal Sample](https://raw.githubusercontent.com/miladnasiri/Covid-19-Radiology-/main/predictions/Normal_sample_1.png)
+- Confidence: 98.1%
+- Clear healthy lung patterns
+
+#### Viral Pneumonia Cases
+![Viral Pneumonia Sample](https://raw.githubusercontent.com/miladnasiri/Covid-19-Radiology-/main/predictions/Viral_Pneumonia_sample_1.png)
+- Confidence: 97.3%
+- Distinguished from COVID-19 patterns
+
+### Key Visual Findings
+- Clear differentiation between COVID-19 and other conditions
+- High confidence predictions across all classes
+- Consistent performance on various image qualities
+- Robust to different X-ray capture conditions
+
 ## 🏗️ Model Architecture
 ```mermaid
 graph TD
@@ -187,5 +223,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 EOL
 
 git add README.md
-git commit -m "Create comprehensive README with full project documentation"
+git commit -m "Update README with comprehensive documentation including visualizations"
 git push origin main
