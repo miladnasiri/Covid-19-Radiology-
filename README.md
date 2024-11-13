@@ -41,3 +41,15 @@ python src/evaluate.py
 ```bash
 python src/predict.py path/to/xray.png
 ```
+
+## Results and Visualizations
+
+### Training Progress
+
+### Model Performance
+
+### Sample Predictions
+
+### Dataset Samples
+
+
