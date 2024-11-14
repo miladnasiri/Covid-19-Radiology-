@@ -218,7 +218,7 @@ python src/evaluate.py
 ## 👤 Author
 **Milad Nasiri**
 - GitHub: [@miladnasiri](https://github.com/miladnasiri)
-- LinkedIn: [Milad Nasiri](Your-LinkedIn-URL)
+- LinkedIn: [Milad Nasiri](https://www.linkedin.com/in/miladnasiri/)
 
 ## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
