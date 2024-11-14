@@ -245,7 +245,7 @@ covid19_xray_classification/
 
 ## 📊 Experiment Tracking
 - Training progress visualization and metrics available on [W&B Dashboard](https://wandb.ai/miladnassiri92-topnetwork/covid-xray-classification/runs/16vcktjk)
-
+![W&B Dashboard](https://github.com/miladnasiri/Covid-19-Radiology-Detection/blob/6dab2fe6cedc18215427aee91594a9b6b4809720/Experiment%20Tracking.png)
 ## 🔍 Model Analysis
 ### Strengths
 - High accuracy on COVID-19 detection (99% precision)
