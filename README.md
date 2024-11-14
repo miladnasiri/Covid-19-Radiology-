@@ -1,8 +1,10 @@
+#!/bin/bash
 cat > README.md << 'EOL'
 # 🔬 COVID-19 X-Ray Classification using EfficientNet with Attention Mechanism
 This project implements an advanced deep learning system for COVID-19 detection from chest X-rays using the EfficientNet architecture with custom modifications. The model's core strength lies in its attention mechanism (CBAM - Convolutional Block Attention Module), which helps it focus on critical areas of X-ray images, similar to how radiologists examine specific regions for diagnosis. The system processes X-ray images through several key stages: first, the image is normalized and resized to 224×224 pixels; then, it passes through the EfficientNet backbone, which extracts important features from the image. The attention mechanism then highlights relevant areas, particularly those showing potential COVID-19 indicators. Finally, through a series of dense layers with dropout for regularization, the model classifies the image into one of four categories: COVID-19, Lung Opacity, Normal, or Viral Pneumonia.
 What makes this implementation unique is its combination of high accuracy (96.46% overall, with 99% precision for COVID-19 cases) and practical efficiency (0.3 seconds per image processing time). The model achieves this through several technical innovations: mixed precision training for faster processing, cosine learning rate scheduling for better convergence, and a custom-weighted loss function to handle class imbalance in the dataset. The training data includes over 21,000 X-ray images, ensuring robust performance across different image qualities and conditions.
 In real-world applications, this system serves as a valuable tool for medical professionals, offering rapid preliminary screening and a reliable second opinion for radiologists. The model's small size (23MB) and fast inference time make it practical for deployment in various medical settings, from large hospitals to smaller clinics with limited computational resources.
+
 ## 📊 Quick Overview
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-red)
@@ -191,6 +193,57 @@ python src/train.py
 python src/evaluate.py
 ```
 
+## 🚀 Model Deployment
+The trained model can be deployed using Docker and Flask, providing both a REST API and a web interface for real-time predictions.
+
+### Docker Deployment
+```bash
+# Build Docker image
+docker build -t covid-xray-classifier .
+
+# Run container
+docker run -p 5000:5000 covid-xray-classifier
+```
+
+### Web Interface & API Endpoints
+- **Web Interface**: Access `http://localhost:5000` for an interactive UI
+- **REST API**: 
+  - `POST /predict`: Send X-ray images for classification
+  - `GET /health`: Check service health
+
+### API Usage Example
+```python
+import requests
+
+# Predict using an X-ray image
+files = {'file': open('path/to/xray.png', 'rb')}
+response = requests.post('http://localhost:5000/predict', files=files)
+prediction = response.json()
+
+# Example response:
+# {
+#     "class": "COVID",
+#     "confidence": 0.992,
+#     "probabilities": {
+#         "COVID": 0.992,
+#         "Lung_Opacity": 0.005,
+#         "Normal": 0.002,
+#         "Viral Pneumonia": 0.001
+#     }
+# }
+```
+
+### Deployment Files Structure
+```
+covid19_xray_classification/
+├── Dockerfile              # Docker configuration
+├── requirements_deploy.txt # Deployment dependencies
+├── app.py                 # Flask application
+└── src/
+    └── models/
+        └── model.py       # Model architecture
+```
+
 ## 📊 Experiment Tracking
 - Training progress visualization and metrics available on [W&B Dashboard](https://wandb.ai/miladnassiri92-topnetwork/covid-xray-classification/runs/16vcktjk)
 
@@ -222,3 +275,4 @@ python src/evaluate.py
 
 ## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
+EOL
