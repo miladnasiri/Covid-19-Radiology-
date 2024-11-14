@@ -194,7 +194,7 @@ python src/evaluate.py
 
 ## 🚀 Model Deployment
 The trained model can be deployed using Docker and Flask, providing both a REST API and a web interface for real-time predictions.
-
+![WebInterface](https://github.com/miladnasiri/Covid-19-Radiology-Detection/blob/38913ed9d34c1b09c4275cd53cbbfda11b8e7a0e/webInterface.png)
 ### Docker Deployment
 ```bash
 # Build Docker image
